@@ -38,6 +38,9 @@ const renderListaCarrito = () => {
 
         //se calcula el total carrito
         totalCarrito.textContent = carrito.calcularTotal();
+
+        document.getElementById("lista-productos")
+                .addEventListener("click", manejarAccionesHandler);
 };
 
 const agregarProductoHandler = (event) => {
@@ -57,6 +60,25 @@ const agregarProductoHandler = (event) => {
     event.target.reset();
     
 };
+
+const manejarAccionesHandler = (event) => {
+    const indice = Number(event.target.dataset.id);
+    if (event.target.classlist.contains("btn-borrar")) {
+        carrito.eliminarProducto(indice);
+        renderListaCarrito();
+    }  
+    if (event.target.classlist.contains("btn-editar")) {
+
+        const newCantidad = prompt("Introduce la nueva cantidad", carrito.productos[indice].cantidad);
+        //Una vez tengo la nuevca cantidad, modifico el carrito de productos
+        if(newCantidad && Number(newCantidad>0)) {
+            carrito.editarProducto(indice, Number(newCantidad));
+            renderListaCarrito();
+        }
+    }
+};
+
+
 
 //añadir DIV para colocar los productos de mi 
 function renderCarrito() {
